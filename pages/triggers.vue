@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="container">
     Triggers
   </section>
 </template>

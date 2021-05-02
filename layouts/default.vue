@@ -11,7 +11,7 @@
           </h2>
         </div>
         <div class="column is-1">
-          <a>
+          <a @click="isPermalink=true">
             <b-tooltip label="Permalink" position="is-bottom" type="is-dark">
               <b-icon icon="link"></b-icon>
             </b-tooltip>
@@ -24,12 +24,12 @@
       <template v-for="(step, index) in steps">
         <b-step-item v-if="step.displayed" :key="index" 
                      :visible="step.visible" :label="step.label" :icon="step.icon" :clickable="true">
-          {{ step.content }}
+          <!-- {{ step.content }} -->
         </b-step-item>
       </template>
     </b-steps>
 
-    <section class="main-content columns">
+    <section class="main-content">
       <!-- <aside class="column is-2 section">
         <p class="menu-label is-hidden-touch">
           General
@@ -46,11 +46,19 @@
         </ul>
       </aside> -->
 
-      <div class="container column is-10">
         <nuxt />
-      </div>
     </section>
-    <qrcode-vue :value="'https://make.exadrums.com?d='+JSON.stringify(qrData)" size="160" renderAs="canvas"></qrcode-vue>
+    <b-modal v-model="isPermalink" class="has-text-centered">
+      <p class="title">
+        <qrcode-vue :value="url" size="160" renderAs="canvas"></qrcode-vue>
+        <b-field position="is-centered">
+          <b-input maxlength="64" v-model="url" type="search" disabled></b-input>
+          <p class="control">
+            <b-button label="Copy" type="is-info" @click="copyUrl" />
+          </p>
+        </b-field>
+      </p>
+    </b-modal>
   </div>
 </template>
 
@@ -63,10 +71,12 @@ const codec = require('json-url')('lzw')
 export default {
   components: 
   {
-    QrcodeVue,
+    QrcodeVue
   },
   data () {
     return {
+      url: '',
+      isPermalink: false,
       qrData: {v: 0, s: 0, steps: []},
       activeStep: 0,
       steps:
@@ -74,28 +84,28 @@ export default {
         {
             label: 'Home',
             icon: 'home',
-            content: 'Home',
+            // content: 'Home',
             to: 'index',
             displayed: true,
         },
         {
             label: 'Sotware',
             icon: 'laptop',
-            content: 'Software guidelines: how to install and use it.',
+            // content: 'Software guidelines: how to install and use it.',
             to: 'software',
             displayed: true,
         },
         {
             label: 'Triggers',
             icon: 'drum',
-            content: 'Triggers: Lorem ipsum dolor sit amet.',
+            // content: 'Triggers: Lorem ipsum dolor sit amet.',
             to: 'triggers',
             displayed: true,
         },
         // {
         //     label: 'Case',
         //     icon: 'cube',
-        //     content: 'Videos: Lorem ipsum dolor sit amet.',
+        //    // content: 'Videos: Lorem ipsum dolor sit amet.',
         //     to: 's',
         //     displayed: true,
         // }
@@ -104,6 +114,24 @@ export default {
   },
   methods:
   {
+    async computeUrl()
+    {
+      const str = await codec.compress(this.qrData)
+      this.url = `https://make.exadrums.com?d=${str}`
+    },
+    async copyUrl()
+    {
+      this.computeUrl()
+      try
+      {
+        this.$copyText(this.url)
+        this.$buefy.toast.open({ message: 'Copied url to clipboard!', type: 'is-success'})
+      }
+      catch(e)
+      {
+        console.log(e)
+      }
+    },
     async stepTopage()
     {
       this.qrData.s = this.activeStep
@@ -115,7 +143,7 @@ export default {
     {
       const routeName = this.$route.name
       this.activeStep = this.steps.findIndex(s => s.to === routeName)
-
+      this.computeUrl()
       // this.$buefy.toast.open({message: `active step = ${this.activeStep}`, queue:false})
     }
   },
@@ -144,6 +172,7 @@ export default {
     }
     this.activeStep = this.qrData.s
     this.stepTopage()
+    this.computeUrl()
   },
   watch: 
   {

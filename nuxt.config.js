@@ -34,6 +34,7 @@ export default {
   
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/vue-clipboard2.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -48,7 +49,7 @@ export default {
     // https://go.nuxtjs.dev/buefy
     'nuxt-buefy',
     'nuxt-fontawesome',
-    'nuxt-babel'
+    'nuxt-babel',
   ],
   buefy: {
     materialDesignIcons: false,

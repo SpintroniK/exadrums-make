@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
+    "deploy": "nuxt generate && printf 'make.exadrums.com' > dist/CNAME && gh-pages -d dist",
     "start": "nuxt start",
     "generate": "nuxt generate"
   },
@@ -25,6 +26,7 @@
     "nuxt-fontawesome": "^0.4.0",
     "qrcode.vue": "1.7.0",
     "sass": "^1.32.12",
-    "sass-loader": "^10.1.1"
+    "sass-loader": "^10.1.1",
+    "vue-clipboard2": "^0.3.1"
   }
 }
