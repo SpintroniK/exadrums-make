@@ -43,21 +43,31 @@
         <nuxt />
       </div>
     </section>
+    <qrcode-vue :value="'https://make.exadrums.com?d='+JSON.stringify(qrData)" size="120" renderAs="canvas"></qrcode-vue>
   </div>
 </template>
 
 <script>
 
+import QrcodeVue from 'qrcode.vue'
+
+const codec = require('json-url')('lzw')
+
 export default {
+  components: 
+  {
+    QrcodeVue,
+  },
   data () {
     return {
+      qrData: {v: 0, s: 0, steps: []},
       activeStep: 0,
       steps:
       [
         {
             label: 'Home',
             icon: 'home',
-            content: '',
+            content: 'Home',
             to: 'index',
             displayed: true,
         },
@@ -87,9 +97,12 @@ export default {
   },
   methods:
   {
-    stepTopage()
+    async stepTopage()
     {
-      this.$router.push({name: this.steps[this.activeStep].to, query:{d: 123}})
+      this.qrData.s = this.activeStep
+      const str = await codec.compress(this.qrData)
+      console.log(str)
+      this.$router.push({name: this.steps[this.activeStep].to, query:{d: str}})
     },
     setRouteStep()
     {
@@ -99,15 +112,22 @@ export default {
       // this.$buefy.toast.open({message: `active step = ${this.activeStep}`, queue:false})
     }
   },
-  mounted()
+  async mounted()
   {
-    // var codec = require('json-url')('lzw');
-	  // var obj = { one: 1, two: 2, three: [1,2,3], four: 'red pineapples' };
-	  // codec.compress(obj).then(result => console.log(result));
-    // const codec = require('json-url')('lzw');
-	  // const json = await codec.decompress('woTCo29uZQHCo3R3bwLCpXRocmVlwpMBAgPCpGZvdXLCrsSOZCBwacSDYXBwbGVz')
-    // console.log(json)
-    this.setRouteStep()
+    this.qrData.steps = [...this.steps.keys()]
+    const params = new URLSearchParams(window.location.search)
+    const d = params.get('d')
+    if(d)
+    {
+      console.log(`data = ${d} [${d.length}]`)
+      const json = await codec.decompress(d)
+      console.log(json)
+      this.qrData = json
+      const jsonStr = JSON.stringify(json)
+      console.log(`data = ${jsonStr} [${jsonStr.length}]`)
+    }
+    this.activeStep = this.qrData.s
+    this.stepTopage()
   },
   watch: 
   {
