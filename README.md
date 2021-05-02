@@ -1,4 +1,4 @@
-# exadrums-docgen
+# exadrums-maker
 
 ## Build Setup
 
