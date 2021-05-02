@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
-    "deploy": "nuxt generate && printf 'make.exadrums.com' > dist/CNAME && gh-pages -d dist",
+    "deploy": "rm -rf dist && nuxt generate && printf 'make.exadrums.com' > dist/CNAME && gh-pages -d dist",
     "start": "nuxt start",
     "generate": "nuxt generate"
   },
