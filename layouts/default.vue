@@ -1,14 +1,21 @@
 <template>
   <div>
     <section class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
+      <div class="hero-body columns">
+        <div class="container colmun is-10">
           <h1 class="title">
             eXaDrums Maker
           </h1>
           <h2 class="subtitle">
             Make your drum module
           </h2>
+        </div>
+        <div class="column is-1">
+          <a>
+            <b-tooltip label="Permalink" position="is-bottom" type="is-dark">
+              <b-icon icon="link"></b-icon>
+            </b-tooltip>
+          </a>
         </div>
       </div>
     </section>
@@ -43,7 +50,7 @@
         <nuxt />
       </div>
     </section>
-    <qrcode-vue :value="'https://make.exadrums.com?d='+JSON.stringify(qrData)" size="120" renderAs="canvas"></qrcode-vue>
+    <qrcode-vue :value="'https://make.exadrums.com?d='+JSON.stringify(qrData)" size="160" renderAs="canvas"></qrcode-vue>
   </div>
 </template>
 
@@ -122,9 +129,18 @@ export default {
       console.log(`data = ${d} [${d.length}]`)
       const json = await codec.decompress(d)
       console.log(json)
-      this.qrData = json
-      const jsonStr = JSON.stringify(json)
-      console.log(`data = ${jsonStr} [${jsonStr.length}]`)
+
+      if(typeof json === 'object')
+      {
+        this.qrData = json
+        if('steps' in json)
+        {
+          const stepsIndexes = json.steps
+          this.steps = this.steps.filter((v, i, a) => stepsIndexes.includes(i))
+        }
+        const jsonStr = JSON.stringify(json)
+        console.log(`data = ${jsonStr} [${jsonStr.length}]`)
+      }
     }
     this.activeStep = this.qrData.s
     this.stepTopage()
