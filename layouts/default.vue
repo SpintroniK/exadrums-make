@@ -117,7 +117,7 @@ export default {
     async computeUrl()
     {
       const str = await codec.compress(this.qrData)
-      this.url = `https://make.exadrums.com?d=${str}`
+      this.url = `https://make.exadrums.com/?d=${str}`
     },
     async copyUrl()
     {

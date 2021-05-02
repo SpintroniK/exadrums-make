@@ -7,7 +7,7 @@ export default {
 
   router:
   {
-    base: './'
+    base: '/'
   },
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -71,6 +71,6 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    publicPath: './'
+    publicPath: (process.env.NODE_ENV !== 'production')? '' : './'
   }
 }
