@@ -76,6 +76,7 @@ export default {
   data () {
     return {
       url: '',
+      urlData: '',
       isPermalink: false,
       qrData: {v: 0, s: 0, steps: []},
       activeStep: 0,
@@ -117,7 +118,14 @@ export default {
     async computeUrl()
     {
       const str = await codec.compress(this.qrData)
+      this.urlData = str
       this.url = `https://make.exadrums.com/?d=${str}`
+    },
+    getUrlData()
+    {
+      const params = new URLSearchParams(window.location.search)
+      const d = params.get('d')
+      return d
     },
     async copyUrl()
     {
@@ -150,8 +158,7 @@ export default {
   async mounted()
   {
     this.qrData.steps = [...this.steps.keys()]
-    const params = new URLSearchParams(window.location.search)
-    const d = params.get('d')
+    const d = this.getUrlData()
     if(d)
     {
       console.log(`data = ${d} [${d.length}]`)
@@ -176,9 +183,16 @@ export default {
   },
   watch: 
   {
-    $route() 
+    async $route() 
     {
       // this.$buefy.toast.open({message: `route = ${this.$route.name}`, queue:false})
+      if(this.$route.name === 'NextStep')
+      {
+        // Special case: redirect
+        this.qrData.s++
+        await this.computeUrl()
+        this.$router.replace({name: this.steps[1].to, query: {d: this.urlData}})
+      }
       this.setRouteStep()
     },
   },
