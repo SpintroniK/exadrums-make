@@ -7,7 +7,7 @@ export default {
 
   router:
   {
-    base: 'exadrums-make'
+    base: './'
   },
 
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -71,5 +71,6 @@ export default {
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    publicPath: './'
   }
 }
