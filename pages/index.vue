@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="section">
     <h1 class="title">How does this work?</h1>
     <p class="has-text-justified">
       This documentation is customizable, if you are coming from 
