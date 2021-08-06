@@ -18,9 +18,13 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'exadrums.com - Maker',
+    title: 'exadrums - Maker',
     htmlAttrs: {
       lang: 'en'
+    },
+    bodyAttrs:
+    {
+      style: 'overflow-x: hidden'
     },
     meta: [
       { charset: 'utf-8' },
@@ -39,7 +43,8 @@ export default {
   
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/vue-clipboard2.js'
+    '~/plugins/vue-clipboard2.js',
+    '~/plugins/kv.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

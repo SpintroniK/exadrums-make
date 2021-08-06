@@ -103,13 +103,13 @@ export default {
             to: 'triggers',
             displayed: true,
         },
-        // {
-        //     label: 'Case',
-        //     icon: 'cube',
-        //    // content: 'Videos: Lorem ipsum dolor sit amet.',
-        //     to: 's',
-        //     displayed: true,
-        // }
+        {
+            label: 'Case',
+            icon: 'cube',
+           // content: 'Videos: Lorem ipsum dolor sit amet.',
+            to: 'case',
+            displayed: true,
+        }
       ]
     }
   },
