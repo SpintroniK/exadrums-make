@@ -101,6 +101,8 @@
 
 <script>
 
+const codec = require('json-url')('lzw')
+
 export default {
   name: 'HomePage',
   data()
@@ -135,6 +137,28 @@ export default {
 
   computed:
   {
+    activeStep:
+    {
+      get()
+      {
+        return this.$store.getters.getActiveStep()
+      },
+      set(value)
+      {
+        this.$store.commit('setActiveStepId', value)
+      }
+    },
+    qrData:
+    {
+      get()
+      {
+        return this.$store.getters.getQrData()
+      },
+      set(value)
+      {
+        this.$store.commit('setQrData',value)
+      }
+    }
 
     // nbTriggersLeft()
     // {
@@ -158,9 +182,11 @@ export default {
   methods:
   {
 
-    nextStep()
+    async nextStep()
     {
-      this.$router.push({name: 'NextStep'})
+      this.activeStep++
+      const str = await codec.compress(this.qrData)
+      this.$router.push({name: this.$store.getters.getSteps()[this.activeStep].to, query:{d: str}})
     },
 
     // removeInstrument(a)

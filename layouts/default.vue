@@ -45,7 +45,6 @@
           </li>
         </ul>
       </aside> -->
-
         <nuxt />
     </section>
     <b-modal v-model="isPermalink" class="has-text-centered">
@@ -77,44 +76,48 @@ export default {
     return {
       url: '',
       urlData: '',
-      isPermalink: false,
-      qrData: {v: 0, s: 0, steps: []},
-      activeStep: 0,
-      steps:
-      [
-        {
-            label: 'Home',
-            icon: 'home',
-            // content: 'Home',
-            to: 'index',
-            displayed: true,
-        },
-        {
-            label: 'Sotware',
-            icon: 'laptop',
-            // content: 'Software guidelines: how to install and use it.',
-            to: 'software',
-            displayed: true,
-        },
-        {
-            label: 'Triggers',
-            icon: 'drum',
-            // content: 'Triggers: Lorem ipsum dolor sit amet.',
-            to: 'triggers',
-            displayed: true,
-        },
-        {
-            label: 'Case',
-            icon: 'cube',
-           // content: 'Videos: Lorem ipsum dolor sit amet.',
-            to: 'case',
-            displayed: true,
-        }
-      ]
+      isPermalink: false
+    }
+  },
+  computed:
+  {
+    steps:
+    {
+      get()
+      {
+        return this.$store.getters.getSteps()
+      },
+      set(value)
+      {
+        this.$store.commit('setSteps', value)
+      }
+    },
+    activeStep:
+    {
+      get()
+      {
+        return this.$store.getters.getActiveStep()
+      },
+      set(value)
+      {
+        this.$store.commit('setActiveStepId', value)
+      }
+    },
+    qrData:
+    {
+      get()
+      {
+        return this.$store.getters.getQrData()
+      },
+      set(value)
+      {
+        this.$store.commit('setQrData',value)
+      }
     }
   },
   methods:
   {
+
     async computeUrl()
     {
       const str = await codec.compress(this.qrData)
@@ -153,7 +156,7 @@ export default {
       this.activeStep = this.steps.findIndex(s => s.to === routeName)
       this.computeUrl()
       // this.$buefy.toast.open({message: `active step = ${this.activeStep}`, queue:false})
-    }
+    },
   },
   async mounted()
   {
@@ -185,14 +188,6 @@ export default {
   {
     async $route() 
     {
-      // this.$buefy.toast.open({message: `route = ${this.$route.name}`, queue:false})
-      if(this.$route.name === 'NextStep')
-      {
-        // Special case: redirect
-        this.qrData.s++
-        await this.computeUrl()
-        this.$router.replace({name: this.steps[1].to, query: {d: this.urlData}})
-      }
       this.setRouteStep()
     },
   },
