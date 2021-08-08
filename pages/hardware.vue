@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h1 class="title">Triggers</h1>
+    <h1 class="title">Hardware</h1>
     ...
   </section>
 </template>

@@ -12,17 +12,17 @@ export const state = _ => ({
           displayed: true,
       },
       {
-          label: 'Sotware',
-          icon: 'laptop',
+          label: 'Software',
+          icon: 'laptop-code',
           // content: 'Software guidelines: how to install and use it.',
           to: 'software',
           displayed: true,
       },
       {
-          label: 'Triggers',
-          icon: 'drum',
-          // content: 'Triggers: Lorem ipsum dolor sit amet.',
-          to: 'triggers',
+          label: 'Hardware',
+          icon: 'microchip',
+          // content: 'Hardware: Lorem ipsum dolor sit amet.',
+          to: 'hardware',
           displayed: true,
       },
       {
