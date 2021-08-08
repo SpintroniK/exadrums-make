@@ -48,15 +48,21 @@
         <nuxt />
     </section>
     <b-modal v-model="isPermalink" class="has-text-centered">
-      <p class="title">
-        <qrcode-vue :value="url" size="160" renderAs="canvas"></qrcode-vue>
-        <b-field position="is-centered">
-          <b-input maxlength="64" v-model="url" type="search" disabled></b-input>
-          <p class="control">
-            <b-button label="Copy" type="is-info" @click="copyUrl" />
-          </p>
-        </b-field>
-      </p>
+      <div class="notification is-black">
+        <h1 class="title">QR Code &amp; Permalink</h1>
+        <h2 class="subtitle">Both the QR Code and the permalink redirect to this page.</h2>
+        <br>
+        <p class="title">
+          <qrcode-vue :value="url" size="160" renderAs="canvas"></qrcode-vue>
+          <br>
+          <b-field position="is-centered">
+            <b-input maxlength="64" v-model="url" type="search" disabled></b-input>
+            <p class="control">
+              <b-button label="Copy" type="is-info" @click="copyUrl" />
+            </p>
+          </b-field>
+        </p>
+      </div>
     </b-modal>
   </div>
 </template>
