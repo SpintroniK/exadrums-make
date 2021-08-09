@@ -7,28 +7,24 @@ export const state = _ => ({
       {
           label: 'Home',
           icon: 'home',
-          // content: 'Home',
           to: 'index',
           displayed: true,
       },
       {
           label: 'Software',
           icon: 'laptop-code',
-          // content: 'Software guidelines: how to install and use it.',
           to: 'software',
           displayed: true,
       },
       {
           label: 'Hardware',
           icon: 'microchip',
-          // content: 'Hardware: Lorem ipsum dolor sit amet.',
           to: 'hardware',
           displayed: true,
       },
       {
           label: 'Case',
           icon: 'cube',
-         // content: 'Videos: Lorem ipsum dolor sit amet.',
           to: 'case',
           displayed: true,
       }
