@@ -5,24 +5,28 @@ export const state = _ => ({
     steps:
     [
       {
+          id: 0,
           label: 'Home',
           icon: 'home',
           to: 'index',
           displayed: true,
       },
       {
+          id: 1,
           label: 'Software',
           icon: 'laptop-code',
           to: 'software',
           displayed: true,
       },
       {
+          id: 2,
           label: 'Hardware',
           icon: 'microchip',
           to: 'hardware',
           displayed: true,
       },
       {
+          id: 3,
           label: 'Case',
           icon: 'cube',
           to: 'case',
@@ -51,7 +55,7 @@ export const getters = {        // this.$store.getters.getSteps...
 export const mutations = {
     setSteps(state, steps)
     {
-        state.steps = [...steps]
+        state.steps = steps.map(s => ({...s}));
     },
     setActiveStepId(state, id)
     {
@@ -62,7 +66,7 @@ export const mutations = {
         state.qrData = {...data}
         if('steps' in state.qrData)
         {
-            state.qrData.steps = [...data.steps]
+            state.qrData.steps = data.steps.map(s => ({...s}));
         }
     }
 }

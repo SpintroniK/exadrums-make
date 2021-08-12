@@ -71,7 +71,7 @@
 
 import QrcodeVue from 'qrcode.vue'
 
-const codec = require('json-url')('lzw')
+const codec = require('json-url')('lzma')
 
 export default {
   components: 
@@ -153,7 +153,6 @@ export default {
     {
       this.qrData.s = this.activeStep
       const str = await codec.compress(this.qrData)
-      console.log(str)
       this.$router.push({name: this.steps[this.activeStep].to, query:{d: str}})
     },
     setRouteStep()
@@ -166,26 +165,32 @@ export default {
   },
   async mounted()
   {
-    this.qrData.steps = [...this.steps.keys()]
+    this.qrData.steps = this.steps.map((_, i) => ({id: i}));
     const d = this.getUrlData()
     if(d)
     {
       console.log(`data = ${d} [${d.length}]`)
-      const json = await codec.decompress(d)
+      let json = await codec.decompress(d)
       console.log(json)
+
+      if(typeof json === 'string')
+      {
+        json = JSON.parse(json)
+      }
 
       if(typeof json === 'object')
       {
         this.qrData = json
         if('steps' in json)
         {
-          const stepsIndexes = json.steps
-          this.steps = this.steps.filter((v, i, a) => stepsIndexes.includes(i))
+          const stepsIds = json.steps.map(s => s.id)
+          this.steps = this.steps.filter(s => stepsIds.includes(s.id))
         }
         const jsonStr = JSON.stringify(json)
         console.log(`data = ${jsonStr} [${jsonStr.length}]`)
       }
     }
+
     this.activeStep = this.qrData.s
     this.stepTopage()
     this.computeUrl()

@@ -19,7 +19,7 @@
 
 <script>
 
-const codec = require('json-url')('lzw')
+const codec = require('json-url')('lzma')
 
 export default {
   name: 'HomePage',
@@ -60,6 +60,7 @@ export default {
     async nextStep()
     {
       this.activeStep++
+      this.qrData.s = this.activeStep
       const str = await codec.compress(this.qrData)
       this.$router.push({name: this.$store.getters.getSteps()[this.activeStep].to, query:{d: str}})
     },
