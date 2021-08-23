@@ -153,7 +153,10 @@ export default {
     {
       this.qrData.s = this.activeStep
       const str = await codec.compress(this.qrData)
-      this.$router.push({name: this.steps[this.activeStep].to, query:{d: str}})
+      if(this.$route.name !== 'make_query')
+      {
+        this.$router.push({name: this.steps[this.activeStep].to, query:{d: str}})
+      }
     },
     setRouteStep()
     {
@@ -163,7 +166,7 @@ export default {
       // this.$buefy.toast.open({message: `active step = ${this.activeStep}`, queue:false})
     },
   },
-  async mounted()
+  async beforeMount()
   {
     this.qrData.steps = this.steps.map((_, i) => ({id: i}));
     const d = this.getUrlData()
@@ -194,6 +197,12 @@ export default {
     this.activeStep = this.qrData.s
     this.stepTopage()
     this.computeUrl()
+  },
+  mounted()
+  {
+    this.$buefy.dialog.alert(`This web page is under construction. 
+    Although it is incomplete, it will be updated frequently.
+    <br>Updates will be posted on &#x201C;<a href="https://news.exadrums.com" target="_blank">news.exadrums.com</a>&#x201D;.`)
   },
   watch: 
   {

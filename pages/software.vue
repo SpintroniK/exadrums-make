@@ -18,8 +18,34 @@ export default {
       content: ''
     }
   },
+  computed:
+  {
+    activeStep:
+    {
+      get()
+      {
+        return this.$store.getters.getActiveStep()
+      },
+      set(value)
+      {
+        this.$store.commit('setActiveStepId', value)
+      }
+    },
+    qrData:
+    {
+      get()
+      {
+        return this.$store.getters.getQrData()
+      },
+      set(value)
+      {
+        this.$store.commit('setQrData',value)
+      }
+    }
+  },
   async mounted()
   {
+    const filesMasks = this.qrData.steps[this.activeStep]
     for(let file of files)
     {
       const response = await fetch(file) 
